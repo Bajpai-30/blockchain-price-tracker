@@ -1,0 +1,18 @@
+# Server Port
+PORT=3000
+
+# PostgreSQL Database Configuration
+DB_HOST=localhost
+DB_USER=postgres
+DB_PASS= password
+DB_NAME=blockchain_price_tracker
+DB_PORT=5432
+
+# Email Configuration (Nodemailer)
+EMAIL_USER=your_email@gmail.com
+EMAIL_PASS=your_email_password
+
+# Moralis or CoinGecko API Key (For fetching blockchain data)
+MORALIS_API_KEY=your_moralis_api_key
+
+# Other API keys or sensitive data can be added here
