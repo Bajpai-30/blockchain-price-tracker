@@ -1,4 +1,4 @@
-const { Price } = require('../models/Price');
+const Price  = require('../models/Price');
 const { Op, Sequelize } = require('sequelize');
 
 // Get prices recorded within the last 24 hours
@@ -8,7 +8,7 @@ const getHourlyPrices = async (req, res) => {
     const prices = await Price.findAll({
       where: {
         createdAt: {
-          [Op.gte]: Sequelize.literal('NOW() - INTERVAL 24 HOUR'),
+          [Op.gte]: Sequelize.literal("NOW() - INTERVAL '24 HOURS'"),
         },
       },
       order: [['createdAt', 'ASC']], // Sort by the time they were created (oldest first)
