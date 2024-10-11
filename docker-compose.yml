@@ -1,0 +1,37 @@
+version: '3'
+services:
+  # Node.js application
+  app:
+    build: .
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=development
+      - PORT=3000
+      - DB_HOST=db
+      - DB_USER=postgres
+      - DB_PASS=your_password
+      - DB_NAME=blockchain_price_tracker
+      - DB_PORT=5432
+      - EMAIL_USER=your_email@example.com
+      - EMAIL_PASS=your_email_password
+    depends_on:
+      - db
+    volumes:
+      - .:/usr/src/app
+    command: npm start
+
+  # PostgreSQL database
+  db:
+    image: postgres:13
+    environment:
+      POSTGRES_DB: blockchain_price_tracker
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: your_password
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+
+volumes:
+  postgres-data:

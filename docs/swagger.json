@@ -1,0 +1,183 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "Blockchain Price Tracker API",
+    "description": "API for tracking Ethereum and Polygon prices, setting alerts, and calculating swap rates.",
+    "version": "1.0.0"
+  },
+  "servers": [
+    {
+      "url": "http://localhost:3000/api",
+      "description": "Local server"
+    }
+  ],
+  "paths": {
+    "/prices": {
+      "get": {
+        "summary": "Get hourly prices",
+        "responses": {
+          "200": {
+            "description": "A list of hourly prices",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Price"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/alerts": {
+      "post": {
+        "summary": "Set a price alert",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Alert"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Alert successfully set"
+          }
+        }
+      }
+    },
+    "/swap-rate": {
+      "post": {
+        "summary": "Get swap rate",
+        "description": "Get the swap rate for converting Ethereum to Bitcoin",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "ethAmount": {
+                    "type": "number",
+                    "example": 1.5
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Swap rate and fee details",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "btcAmount": {
+                      "type": "number",
+                      "example": 0.0412
+                    },
+                    "fee": {
+                      "type": "object",
+                      "properties": {
+                        "eth": {
+                          "type": "number",
+                          "example": 0.045
+                        },
+                        "usd": {
+                          "type": "number",
+                          "example": 150.34
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid Ethereum amount",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "Invalid Ethereum amount"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "Error calculating swap rate"
+                    },
+                    "error": {
+                      "type": "string",
+                      "example": "Error details"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "Price": {
+        "type": "object",
+        "properties": {
+          "chain": {
+            "type": "string",
+            "example": "ethereum"
+          },
+          "price": {
+            "type": "number",
+            "example": 3000.50
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      },
+      "Alert": {
+        "type": "object",
+        "properties": {
+          "chain": {
+            "type": "string",
+            "example": "ethereum"
+          },
+          "targetPrice": {
+            "type": "number",
+            "example": 2500
+          },
+          "email": {
+            "type": "string",
+            "example": "user@example.com"
+          }
+        }
+      }
+    }
+  }
+}
